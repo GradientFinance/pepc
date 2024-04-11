@@ -75,8 +75,7 @@ type BatcherService struct {
 
 	NotSubmittingOnStart bool
 
-	DA                      eigenda.IEigenDA
-	PrefixDerivationEnabled bool
+	DA eigenda.IEigenDA
 }
 
 // BatcherServiceFromCLIConfig creates a new BatcherService from a CLIConfig.
@@ -126,7 +125,6 @@ func (bs *BatcherService) initFromCLIConfig(ctx context.Context, version string,
 	if err := bs.initDA(cfg); err != nil {
 		return fmt.Errorf("failed to init DA: %w", err)
 	}
-	bs.PrefixDerivationEnabled = cfg.PrefixDerivationEnabled
 	bs.initDriver()
 	if err := bs.initRPCServer(cfg); err != nil {
 		return fmt.Errorf("failed to start RPC server: %w", err)
@@ -295,17 +293,16 @@ func (bs *BatcherService) initMetricsServer(cfg *CLIConfig) error {
 
 func (bs *BatcherService) initDriver() {
 	bs.driver = NewBatchSubmitter(DriverSetup{
-		Log:                     bs.Log,
-		Metr:                    bs.Metrics,
-		RollupConfig:            bs.RollupConfig,
-		Config:                  bs.BatcherConfig,
-		Txmgr:                   bs.TxManager,
-		L1Client:                bs.L1Client,
-		EndpointProvider:        bs.EndpointProvider,
-		ChannelConfig:           bs.ChannelConfig,
-		PlasmaDA:                bs.PlasmaDA,
-		DA:                      bs.DA,
-		PrefixDerivationEnabled: bs.PrefixDerivationEnabled,
+		Log:              bs.Log,
+		Metr:             bs.Metrics,
+		RollupConfig:     bs.RollupConfig,
+		Config:           bs.BatcherConfig,
+		Txmgr:            bs.TxManager,
+		L1Client:         bs.L1Client,
+		EndpointProvider: bs.EndpointProvider,
+		ChannelConfig:    bs.ChannelConfig,
+		PlasmaDA:         bs.PlasmaDA,
+		DA:               bs.DA,
 	})
 }
 

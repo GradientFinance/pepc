@@ -44,17 +44,16 @@ type PlasmaInputFetcher interface {
 // batch submitter transactions.
 // This is not a stage in the pipeline, but a wrapper for another stage in the pipeline
 type DataSourceFactory struct {
-	log                     log.Logger
-	dsCfg                   DataSourceConfig
-	fetcher                 L1Fetcher
-	blobsFetcher            L1BlobsFetcher
-	plasmaFetcher           PlasmaInputFetcher
-	ecotoneTime             *uint64
-	daClient                eigenda.IEigenDA
-	prefixDerivationEnabled bool
+	log           log.Logger
+	dsCfg         DataSourceConfig
+	fetcher       L1Fetcher
+	blobsFetcher  L1BlobsFetcher
+	plasmaFetcher PlasmaInputFetcher
+	ecotoneTime   *uint64
+	daClient      eigenda.IEigenDA
 }
 
-func NewDataSourceFactory(log log.Logger, cfg *rollup.Config, fetcher L1Fetcher, blobsFetcher L1BlobsFetcher, plasmaFetcher PlasmaInputFetcher, daCfg *eigenda.Config, prefixDerivationEnabled bool) *DataSourceFactory {
+func NewDataSourceFactory(log log.Logger, cfg *rollup.Config, fetcher L1Fetcher, blobsFetcher L1BlobsFetcher, plasmaFetcher PlasmaInputFetcher, daCfg *eigenda.Config) *DataSourceFactory {
 	config := DataSourceConfig{
 		l1Signer:          cfg.L1Signer(),
 		batchInboxAddress: cfg.BatchInboxAddress,
@@ -70,14 +69,13 @@ func NewDataSourceFactory(log log.Logger, cfg *rollup.Config, fetcher L1Fetcher,
 	}
 
 	return &DataSourceFactory{
-		log:                     log,
-		dsCfg:                   config,
-		fetcher:                 fetcher,
-		blobsFetcher:            blobsFetcher,
-		plasmaFetcher:           plasmaFetcher,
-		ecotoneTime:             cfg.EcotoneTime,
-		daClient:                daClient,
-		prefixDerivationEnabled: prefixDerivationEnabled,
+		log:           log,
+		dsCfg:         config,
+		fetcher:       fetcher,
+		blobsFetcher:  blobsFetcher,
+		plasmaFetcher: plasmaFetcher,
+		ecotoneTime:   cfg.EcotoneTime,
+		daClient:      daClient,
 	}
 }
 
@@ -90,9 +88,9 @@ func (ds *DataSourceFactory) OpenData(ctx context.Context, ref eth.L1BlockRef, b
 		if ds.blobsFetcher == nil {
 			return nil, fmt.Errorf("ecotone upgrade active but beacon endpoint not configured")
 		}
-		src = NewBlobDataSource(ctx, ds.log, ds.dsCfg, ds.fetcher, ds.blobsFetcher, ref, batcherAddr, ds.daClient, ds.prefixDerivationEnabled)
+		src = NewBlobDataSource(ctx, ds.log, ds.dsCfg, ds.fetcher, ds.blobsFetcher, ref, batcherAddr, ds.daClient)
 	} else {
-		src = NewCalldataSource(ctx, ds.log, ds.dsCfg, ds.fetcher, ref, batcherAddr, ds.daClient, ds.prefixDerivationEnabled)
+		src = NewCalldataSource(ctx, ds.log, ds.dsCfg, ds.fetcher, ref, batcherAddr, ds.daClient)
 	}
 	if ds.dsCfg.plasmaEnabled {
 		// plasma([calldata | blobdata](l1Ref)) -> data

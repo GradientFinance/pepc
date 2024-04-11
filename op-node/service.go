@@ -119,8 +119,7 @@ func NewConfig(ctx *cli.Context, log log.Logger) (*node.Config, error) {
 
 		Plasma: plasma.ReadCLIConfig(ctx),
 
-		DA:                      daCfg,
-		PrefixDerivationEnabled: ctx.Bool(flags.PrefixDerivationEnabledFlag.Name),
+		DA: daCfg,
 	}
 
 	if err := cfg.LoadPersisted(log); err != nil {

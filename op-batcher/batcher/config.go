@@ -83,14 +83,13 @@ type CLIConfig struct {
 	// ActiveSequencerCheckDuration is the duration between checks to determine the active sequencer endpoint.
 	ActiveSequencerCheckDuration time.Duration
 
-	TxMgrConfig             txmgr.CLIConfig
-	LogConfig               oplog.CLIConfig
-	MetricsConfig           opmetrics.CLIConfig
-	PprofConfig             oppprof.CLIConfig
-	RPC                     oprpc.CLIConfig
-	PlasmaDA                plasma.CLIConfig
-	DAConfig                eigenda.CLIConfig
-	PrefixDerivationEnabled bool
+	TxMgrConfig   txmgr.CLIConfig
+	LogConfig     oplog.CLIConfig
+	MetricsConfig opmetrics.CLIConfig
+	PprofConfig   oppprof.CLIConfig
+	RPC           oprpc.CLIConfig
+	PlasmaDA      plasma.CLIConfig
+	DAConfig      eigenda.CLIConfig
 }
 
 func (c *CLIConfig) Check() error {
@@ -170,6 +169,5 @@ func NewConfig(ctx *cli.Context) *CLIConfig {
 		RPC:                          oprpc.ReadCLIConfig(ctx),
 		PlasmaDA:                     plasma.ReadCLIConfig(ctx),
 		DAConfig:                     eigenda.ReadCLIConfig(ctx),
-		PrefixDerivationEnabled:      ctx.Bool(flags.PrefixDerivationEnabledFlag.Name),
 	}
 }

@@ -359,12 +359,6 @@ var (
 		Value:   "http://da:26658",
 		EnvVars: prefixEnvVars("DA_RPC"),
 	}
-	PrefixDerivationEnabledFlag = &cli.BoolFlag{
-		Name:    "da-prefix-derivation-enabled",
-		Usage:   "Enable prefix derivation",
-		Value:   false,
-		EnvVars: prefixEnvVars("DA_PREFIX_DERIVATION_ENABLED"),
-	}
 )
 
 var requiredFlags = []cli.Flag{
@@ -412,7 +406,6 @@ var optionalFlags = []cli.Flag{
 	ConductorRpcFlag,
 	ConductorRpcTimeoutFlag,
 	SafeDBPath,
-	PrefixDerivationEnabledFlag,
 }
 
 var DeprecatedFlags = []cli.Flag{

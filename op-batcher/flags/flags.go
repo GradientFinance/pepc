@@ -128,12 +128,6 @@ var (
 		Value:   2 * time.Minute,
 		EnvVars: prefixEnvVars("ACTIVE_SEQUENCER_CHECK_DURATION"),
 	}
-	PrefixDerivationEnabledFlag = &cli.BoolFlag{
-		Name:    "da-prefix-derivation-enabled",
-		Usage:   "Enable prefix derivation",
-		Value:   false,
-		EnvVars: prefixEnvVars("DA_PREFIX_DERIVATION_ENABLED"),
-	}
 	// Legacy Flags
 	SequencerHDPathFlag = txmgr.SequencerHDPathFlag
 )
@@ -158,7 +152,6 @@ var optionalFlags = []cli.Flag{
 	BatchTypeFlag,
 	DataAvailabilityTypeFlag,
 	ActiveSequencerCheckDurationFlag,
-	PrefixDerivationEnabledFlag,
 }
 
 func init() {
